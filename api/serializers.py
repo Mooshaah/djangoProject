@@ -1,6 +1,9 @@
+import token
+
 from rest_framework import serializers
 from api.models import Article
 from django.contrib.auth.models import User
+from rest_framework.authtoken.views import Token
 
 class Article_serializer(serializers.ModelSerializer): # A CLASS THAT SERIALIZE THE ARTICLE CLASS
     class Meta:
@@ -18,4 +21,6 @@ class User_serilaizer(serializers.ModelSerializer):
         }}
 
     def create(self, Validated_data):
-        user = User.objects.create_superuser(**Validated_data)
+        user = User.objects.create_user(**Validated_data)
+        Token.objects.create(user=user)
+        return user
